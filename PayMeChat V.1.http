@@ -1,0 +1,6 @@
+@PayMeChat_V._1_HostAddress = http://localhost:5198
+
+GET {{PayMeChat_V._1_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

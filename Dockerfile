@@ -7,7 +7,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copiar solo el archivo del proyecto (.csproj)
-COPY ["PayMeChat_V1_Backend/PayMeChat_V_1.csproj", "PayMeChat_V1_Backend/"]
+ COPY ["Proyecto_pay_me_chat/PayMeChat_V1_Backend/PayMeChat_V_1.csproj", "PayMeChat_V1_Backend/"]
+
 WORKDIR "/src/PayMeChat_V1_Backend"
 RUN dotnet restore "PayMeChat_V_1.csproj"
 

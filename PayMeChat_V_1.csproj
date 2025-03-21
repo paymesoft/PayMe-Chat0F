@@ -29,10 +29,10 @@
 
     <!-- 🔹 API y Documentación -->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
 
     <!-- 🔹 Compatibilidad con APIs modernas -->
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
 
 </Project>
-

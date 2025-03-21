@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 
 [ApiController]
-[Route("api/webhook")]
+[Route("whatsapp-api/webhook")]
 public class WhatsAppWebhookController : ControllerBase
 {
     private static List<string> mensajesRecibidos = new List<string>();
@@ -22,14 +22,14 @@ public class WhatsAppWebhookController : ControllerBase
     }
 
     // 🔹 Endpoint para obtener los mensajes almacenados temporalmente
-    [HttpGet]
+    [HttpGet("messages")]
     public IActionResult GetMessages()
     {
         return Ok(mensajesRecibidos);
     }
 
     // 🔹 Endpoint para la verificación del Webhook con Meta
-    [HttpGet]
+    [HttpGet("verify")]
     public IActionResult VerifyWebhook([FromQuery] string hub_mode, [FromQuery] string hub_challenge, [FromQuery] string hub_verify_token)
     {
         if (hub_mode == "subscribe" && hub_verify_token == VerifyToken)

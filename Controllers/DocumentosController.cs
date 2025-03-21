@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace PayMeChat_V_1.Controllers
 {
@@ -36,7 +37,11 @@ namespace PayMeChat_V_1.Controllers
         /// 📂 Subir un documento (Solo PDF)
         /// </summary>
         [HttpPost("subir")]
-        public async Task<IActionResult> SubirDocumento([FromForm] IFormFile file, [FromForm] int clienteId)
+        [Consumes("multipart/form-data")]
+        [SwaggerOperation("SubirDocumento")]
+        public async Task<IActionResult> SubirDocumento(
+            [SwaggerParameter(Description = "Archivo PDF a subir")] IFormFile file,
+            [SwaggerParameter(Description = "ID del cliente")] int clienteId)
         {
             if (file == null || file.Length == 0)
                 return BadRequest(new { message = "No se proporcionó un archivo válido." });

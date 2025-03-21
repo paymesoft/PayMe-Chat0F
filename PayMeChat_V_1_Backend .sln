@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayMeChat V.1", "PayMeChat V.1\PayMeChat V.1.csproj", "{E4AF3742-B086-4A3F-B431-C16E884125A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayMeChat V.1", "PayMeChat_V_1.csproj", "{E4AF3742-B086-4A3F-B431-C16E884125A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

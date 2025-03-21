@@ -112,6 +112,9 @@ builder.Services.AddSwaggerGen(c =>
 
     // 🔹 Soporte para subida de archivos en Swagger
     c.OperationFilter<FileUploadOperationFilter>();
+    
+    // Enable annotations
+    c.EnableAnnotations();
 });
 
 // ✅ Crear la carpeta 'uploads' si no existe

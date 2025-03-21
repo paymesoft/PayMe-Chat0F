@@ -140,7 +140,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // ✅ Middleware de seguridad
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 

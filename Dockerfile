@@ -3,14 +3,14 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
 
+# Etapa de construcción
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar solo el archivo del proyecto (.csproj)
- COPY ["PayMeChat_V_1.csproj", "./"]
+# Copiar solo el archivo del proyecto (.csproj) desde la raíz
+COPY ["PayMeChat_V_1.csproj", "./"]
 
-
-WORKDIR "/src/PayMeChat_V1_Backend"
+# Restaurar las dependencias
 RUN dotnet restore "PayMeChat_V_1.csproj"
 
 # Copiar todo el código fuente

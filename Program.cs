@@ -9,8 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Collections.Generic;
-using PayMeChat_V1.Filters; 
-
+using PayMeChat_V1.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +42,9 @@ builder.Services.AddScoped<IDbConnection>(sp =>
 
 // ✅ Inyección de IConfiguration explícitamente
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+// ✅ Inyección de HttpClient para el controlador de WhatsApp
+builder.Services.AddHttpClient();
 
 // ✅ Agregar controladores
 builder.Services.AddControllers();
@@ -112,7 +114,7 @@ builder.Services.AddSwaggerGen(c =>
 
     // 🔹 Soporte para subida de archivos en Swagger
     c.OperationFilter<FileUploadOperationFilter>();
-    
+
     // Enable annotations
     c.EnableAnnotations();
 });
@@ -138,26 +140,3 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
     });
 }
-
-// ✅ Middleware de seguridad
-//app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-
-// ✅ Aplicar CORS antes de autenticación
-app.UseCors(corsPolicy);
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-// ✅ Mapeo de controladores
-app.MapControllers();
-
-// Endpoint de prueba para verificar que el servidor está corriendo
-app.MapGet("/", () => "API de PayMeChat corriendo...");
-
-// Endpoint de prueba del webhook
-app.MapGet("/api/webhook", () => "Webhook esperando mensajes...");
-
-// ✅ Ejecutar la aplicación
-app.Run();

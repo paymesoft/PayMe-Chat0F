@@ -14,6 +14,7 @@
     <!-- 🔹 Base de Datos -->
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
     
     <!-- 🔹 Entity Framework Core para SQL Server -->

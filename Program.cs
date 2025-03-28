@@ -49,18 +49,21 @@ builder.Services.AddHttpClient();
 // ✅ Agregar controladores
 builder.Services.AddControllers();
 
-// ✅ Configuración de CORS (para permitir conexiones desde los frontends)
+// ✅ Configuración de CORS
 var corsPolicy = "AllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
-        policy.WithOrigins("http://localhost:3000", "http://localhost:3001") // Permitir los frontends
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials()); // Permite credenciales como cookies o tokens en headers
+        policy.WithOrigins(
+            "http://localhost:3000",
+            "http://localhost:3001"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
 });
 
-// ✅ Configuración de autenticación con JWT
+// ✅ Configuración de autenticación JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -79,7 +82,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // ✅ Agregar autorización
 builder.Services.AddAuthorization();
 
-// ✅ Configurar Swagger para documentación de API y subida de archivos
+// ✅ Configurar Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -90,7 +93,6 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Documentación de la API de PayMeChat"
     });
 
-    // 🔹 Agregar soporte para autenticación JWT en Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -112,24 +114,21 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // 🔹 Soporte para subida de archivos en Swagger
     c.OperationFilter<FileUploadOperationFilter>();
-
-    // Enable annotations
     c.EnableAnnotations();
 });
 
-// ✅ Crear la carpeta 'uploads' si no existe
+// ✅ Crear carpeta 'uploads' si no existe
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 if (!Directory.Exists(uploadsPath))
 {
     Directory.CreateDirectory(uploadsPath);
 }
 
-// ✅ Construcción de la aplicación
+// ✅ Construcción de la app
 var app = builder.Build();
 
-// ✅ Habilitar Swagger en desarrollo
+// ✅ Habilitar middleware y Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -140,3 +139,12 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
     });
 }
+
+// ✅ Middlewares importantes
+app.UseCors(corsPolicy);
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+
+// ✅ Establecer URL explícita si se desea (opcional si ya está en appsettings.json)
+app.Run();

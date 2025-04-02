@@ -79,32 +79,42 @@ namespace YourNamespaceHere
         {
             try
             {
-                var entry = body.RootElement.GetProperty("entry")[0]
-                                     .GetProperty("changes")[0]
-                                     .GetProperty("value");
+                var entry = body.RootElement.GetProperty("entry")[0];
+                var changes = entry.GetProperty("changes")[0];
+                var value = changes.GetProperty("value");
 
-                var message = entry.GetProperty("messages")[0];
-                var phoneNumberId = entry.GetProperty("metadata").GetProperty("phone_number_id").GetString();
+                // ✅ Validar si "messages" existe
+                if (!value.TryGetProperty("messages", out var messagesElement) || messagesElement.GetArrayLength() == 0)
+                {
+                    Console.WriteLine("Webhook recibido sin mensajes. Puede ser una notificación de estado.");
+                    return Ok();
+                }
 
+                var message = messagesElement[0];
+
+                // ✅ Validar tipo de mensaje
                 if (message.GetProperty("type").GetString() == "text")
                 {
                     var from = message.GetProperty("from").GetString();
                     var content = message.GetProperty("text").GetProperty("body").GetString();
 
-                    using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-                    await conn.ExecuteAsync("INSERT INTO WhatsAppMessages (PhoneNumber, Direction, Content, Timestamp) VALUES (@from, 'inbound', @content, GETUTCDATE())",
-                        new { from, content });
+                    Console.WriteLine($"Mensaje INBOUND recibido de {from}: {content}");
 
-                    return Ok();
+                    using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+                    await conn.ExecuteAsync(
+                        "INSERT INTO WhatsAppMessages (PhoneNumber, Direction, Content, Timestamp) VALUES (@from, 'inbound', @content, GETUTCDATE())",
+                        new { from, content });
                 }
+
+                return Ok();
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error en ReceiveWebhook: {ex.Message}");
                 return BadRequest(new { error = ex.Message });
             }
-
-            return Ok();
         }
+
 
         [HttpGet("messages/{number}")]
         public async Task<IActionResult> GetMessages(string number)
